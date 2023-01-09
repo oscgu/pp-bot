@@ -18,12 +18,28 @@ export default {
         );
 
         setInterval(async () => {
-            const osFloor = await getOsFloor();
-            client.user?.setActivity(`Floor: ${osFloor}`, {
-                type: ActivityType.Watching
-            });
+            try {
+                const osFloor = await getOsFloor();
+                client.user?.setActivity(`Floor: ${osFloor}`, {
+                    type: ActivityType.Watching
+                });
+            } catch (err) {
+                if (err instanceof Error) {
+                    console.log(err.stack);
+                } else {
+                    console.log(err);
+                }
+            }
         }, 20000);
 
-        await getSells(client);
+        try {
+            await getSells(client);
+        } catch (error) {
+            if (error instanceof Error) {
+                console.log(error.stack);
+            } else {
+                console.log(error);
+            }
+        }
     }
 };
